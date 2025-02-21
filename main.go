@@ -1,44 +1,84 @@
 package main
 
+//Arrays in Go
+
 import "fmt"
 
-type Person struct {
-	name string
-	age  int
-}
-
 func main() {
-	// fmt.Print("prints without new line")
-	// fmt.Print("you can see from here \n")
-	// fmt.Println("prints with a newline at the end")
+	//arrays in Go have a fixed length
+	//declaring an array in go
+	//elements are initialised with 0 values
+	//access elements using index
 
-	name := "ichami"
-	age := 12
-	height := 1.3
-	isGoFun := true
-	pi := 3.14159
+	var ages [3]int = [3]int{10, 45, 20}
+	var nums = [3]int{1, 2, 3} //alternate way to create an array in Go
 
-	//using fmt.Printf for formatted strings %_ = a format specify (%v,%d,%s etc)
-	fmt.Printf("my name is %s, im %d and %.2f meters tall \n", name, age, height)
+	nums[0] = 23
 
-	//storing formatted text in a variable
-	message := fmt.Sprintf("Name: %s, Age: %d", name, age)
-	fmt.Println(message)
+	fmt.Println(ages)      //prints the values of an array
+	fmt.Println(len(nums)) //prints the length of an array
 
-	//special formatting verbs
-	fmt.Printf("print type of name: %T\n", name) //%T prints the type of the variable
-	fmt.Printf("boolean value: %t\n", isGoFun)   //%t prints a boolean (true/false)
-	fmt.Printf("scientific notation: %e\n", pi)  //%e prints scientific notation
-	fmt.Printf("adds quote %q\n", name)          //%q adds quotes around a string
+	//use '...' to let Go determine the size of the array
+	colors := [...]string{"red", "yellow", "blue"}
+	fmt.Println("colors:", colors)
 
-	//printing a struct
-	P := Person{name: "ichami", age: 10}
-	fmt.Printf("struct values %v\n", P)   //prints struct values
-	fmt.Printf("struct details %+v\n", P) //prints fields plus values
+	//multidimensional arrays
+	matrix := [2][3]int{ //creates a multidimensional array of 2 rows 3 columns
+		{1, 2, 3},
+		{4, 5, 6},
+	}
 
-	//using backticks for multiline prints
-	msg := `Hello ichami
-	Welcome to Go programming
-	THis string spans multiple lines`
-	fmt.Println(msg)
+	fmt.Println("Multidimensional aray(2x3):", matrix)
+
+	//looping through an array
+	for i := 0; i < len(colors); i++ {
+		fmt.Println("Color at index ", i, ":", colors[i])
+	}
+
+	//slices in Go (use arrays under the hood)
+
+	//Donot have a fixed size
+	//slices are declared using [] without the size
+
+	scores := []int{1, 2, 3, 4} //declaring a new slice, also Go infers the length for us
+	scores[2] = 10
+
+	fmt.Println(scores, len(scores)) //scores slice length is 4
+
+	//slice functions
+	//1 Append (add new element at the end of the slice)
+
+	//appending new values
+	//this actually returns a slice for us
+	scores = append(scores, 20)      //returns a new slice scores now of length 5
+	fmt.Println(scores, len(scores)) //the length now changes from 4 to 5
+
+	//2 copy (simply copy a slice)
+	source := []int{10, 20, 30}
+	dest := make([]int, len(source)) // Create slice with same length
+	copy(dest, source)               // Copy data
+
+	fmt.Println("source:", source, "dest:", dest)
+
+	//slice ranges(creating a slice from an array)
+	arr1 := [5]int{1, 2, 3, 4, 5}
+	slice1 := arr1[1:4] //including index 1 to 3 (excluding index 4)
+
+	fmt.Println("slice1:", slice1) //output [2,3,4]
+	slice2 := arr1[:2]             //from index 0 to 2 output [1,2]
+	fmt.Println("slice2:", slice2)
+
+	slice3 := arr1[1:]             //from index 0 to the last index of arr1
+	fmt.Println("slice3:", slice3) //expected output [2,3,4,5]
+
+	//multidimensional slices (slices of slices (flexible))
+
+	grid := [][]int{ //slices allows rows of different lengths unlike arrays
+		{1, 2, 3},
+		{4, 5},
+		{6, 7, 8, 9},
+	}
+
+	fmt.Println("slices of slices(grid):", grid)
+
 }
