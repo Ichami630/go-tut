@@ -2,31 +2,43 @@ package main
 
 import "fmt"
 
-// string data types
-var name = "ichami"      //type inference
-var city string = "buea" //explicit type declaration
-var occupation string
+type Person struct {
+	name string
+	age  int
+}
 
-// numbers in go
-// 1 interger number types
-var ageOne int = 10
-var ageTwo = 20
-
-//bits and int
-// var numOne int8 = 25 //all signed(negative and positive) 8 bit intergers range -127 to 128
-// var numTwo int32 = 2323 //Range: -2147483648 through 2147483647
-// var numThree uint8 = 10 //uint8 is the set of all unsigned 8-bit integers. Range: 0 through 255. no negative numbers
-
-// float (float32 and float64)
-var one float32 = 1.3
-var two float64 = 343234.3 //float64 has a higher precision than float32
 func main() {
-	// country := "cameroon" //short declaration, only allowed inside functions
-	// fmt.Println("Country:", country)
-	fmt.Println(name, city, occupation)
+	// fmt.Print("prints without new line")
+	// fmt.Print("you can see from here \n")
+	// fmt.Println("prints with a newline at the end")
 
-	ageThree := 30
-	fmt.Println(ageOne, ageTwo, ageThree)
-	three := 134.4 //will be auto inferred as float64
-	fmt.Println(one, two, three)
+	name := "ichami"
+	age := 12
+	height := 1.3
+	isGoFun := true
+	pi := 3.14159
+
+	//using fmt.Printf for formatted strings %_ = a format specify (%v,%d,%s etc)
+	fmt.Printf("my name is %s, im %d and %.2f meters tall \n", name, age, height)
+
+	//storing formatted text in a variable
+	message := fmt.Sprintf("Name: %s, Age: %d", name, age)
+	fmt.Println(message)
+
+	//special formatting verbs
+	fmt.Printf("print type of name: %T\n", name) //%T prints the type of the variable
+	fmt.Printf("boolean value: %t\n", isGoFun)   //%t prints a boolean (true/false)
+	fmt.Printf("scientific notation: %e\n", pi)  //%e prints scientific notation
+	fmt.Printf("adds quote %q\n", name)          //%q adds quotes around a string
+
+	//printing a struct
+	P := Person{name: "ichami", age: 10}
+	fmt.Printf("struct values %v\n", P)   //prints struct values
+	fmt.Printf("struct details %+v\n", P) //prints fields plus values
+
+	//using backticks for multiline prints
+	msg := `Hello ichami
+	Welcome to Go programming
+	THis string spans multiple lines`
+	fmt.Println(msg)
 }
