@@ -1,84 +1,103 @@
 package main
 
-//Arrays in Go
+import (
+	"fmt"
+	"math"
+	"math/rand"
+	"os"
+	"sort"
+	"strings"
+	"time"
+)
 
-import "fmt"
+//standard libraries in Go
+/*Go's standard library provides us with a rich set of build-in packages that helps with various
+functionalities like networking,strings,file handling and more*/
+
+/*
+1 fmt - Formatted I/O (printing and scanning)
+the fmt package is used for input and output operations
+*/
 
 func main() {
-	//arrays in Go have a fixed length
-	//declaring an array in go
-	//elements are initialised with 0 values
-	//access elements using index
+	// printing output
+	name := "ichami"
+	fmt.Println("name:", name)     //printing with a new line
+	fmt.Printf("hello %s\n", name) //formatted printing
 
-	var ages [3]int = [3]int{10, 45, 20}
-	var nums = [3]int{1, 2, 3} //alternate way to create an array in Go
+	// taking input
+	var firstName string
+	fmt.Print("Enter your name:")
+	fmt.Scanln(&firstName) //takes user input
+	fmt.Println("welcome,", name)
 
-	nums[0] = 23
+	/*2 strings - String manipulation
+	The string package helps in handling and manipulating strings
+	*/
 
-	fmt.Println(ages)      //prints the values of an array
-	fmt.Println(len(nums)) //prints the length of an array
+	text := "Hello, Go is awesome"
+	fmt.Println(strings.ToUpper(text))                    //converts to uppercase
+	fmt.Println(strings.ToLower(text))                    //converts to lowercase
+	fmt.Println(strings.Contains(text, "Go"))             //checks if Go is present (true)
+	fmt.Println(strings.ReplaceAll(text, "Go", "Golang")) //replace substring
+	fmt.Println(strings.Split(text, " "))                 //split into a splice
 
-	//use '...' to let Go determine the size of the array
-	colors := [...]string{"red", "yellow", "blue"}
-	fmt.Println("colors:", colors)
+	/*3 math - Mathematical functions
+	The math package provides common mathematical functions
+	*/
+	fmt.Println("square root of 16:", math.Sqrt(16))   // Square root
+	fmt.Println("2 raise to power 3:", math.Pow(2, 3)) // 2^3
+	fmt.Println("round 4.6:", math.Round(4.6))         // Round to nearest integer
+	fmt.Println("ceil 4.2:", math.Ceil(4.2))           // Round up
+	fmt.Println("floor of 4.9:", math.Floor(4.9))      // Round down
 
-	//multidimensional arrays
-	matrix := [2][3]int{ //creates a multidimensional array of 2 rows 3 columns
-		{1, 2, 3},
-		{4, 5, 6},
+	/*4 time - working with date and time
+	the time package handles date, time and duration
+	*/
+	now := time.Now()
+	formatted := now.Format("2006-01-02 15:04:05") // Go uses this reference date
+	fmt.Println("current time:", now, "formatted:", formatted)
+
+	fmt.Println("Wait for 2 seconds...")
+	time.Sleep(2 * time.Second) // Pauses for 2 seconds
+	fmt.Println("Done!")
+
+	//Go uses "2006-01-02 15:04:05" as it reference time
+
+	/*5 rand - Generating random numbers
+	the math/rand package is used to generate random numbers
+	*/
+	rand.Seed(time.Now().UnixNano()) //set a different seed each time
+	fmt.Println(rand.Intn(100))      //generate a random number between 0 - 100
+	//use rand.Seed(time.Now().UnixNano()), to ensure new values everytime
+
+	/*6 sort */
+
+	ages := []int{40, 34, 100, 2, 54}
+	sort.Ints(ages)
+	fmt.Println(ages) //sort the splice in desc order
+
+	index := sort.SearchInts(ages, 54) //returns the index of the now sorted splice
+	fmt.Println(index)                 //expected answer 3
+
+	names := []string{"ichami", "mispa", "feli", "brandon"}
+	sort.Strings(names)
+	fmt.Println(names)                              //returns the sorted names in desc order of alphabet
+	fmt.Println(sort.SearchStrings(names, "mispa")) //returns the index of name mispa in splice of names (output:3)
+
+	/*7 io/ioutil - Reading and Writing files
+	The io/ioutil helps in reading and writing files*/
+	// content := []byte("Hello Go")
+	// err := os.WriteFile("test.txt", content, 0664) //create a new file
+
+	// if err != nil {
+	// 	fmt.Println("Error:", err)
+	// }
+
+	data, err := os.ReadFile("test.txt") //read file content
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
 	}
-
-	fmt.Println("Multidimensional aray(2x3):", matrix)
-
-	//looping through an array
-	for i := 0; i < len(colors); i++ {
-		fmt.Println("Color at index ", i, ":", colors[i])
-	}
-
-	//slices in Go (use arrays under the hood)
-
-	//Donot have a fixed size
-	//slices are declared using [] without the size
-
-	scores := []int{1, 2, 3, 4} //declaring a new slice, also Go infers the length for us
-	scores[2] = 10
-
-	fmt.Println(scores, len(scores)) //scores slice length is 4
-
-	//slice functions
-	//1 Append (add new element at the end of the slice)
-
-	//appending new values
-	//this actually returns a slice for us
-	scores = append(scores, 20)      //returns a new slice scores now of length 5
-	fmt.Println(scores, len(scores)) //the length now changes from 4 to 5
-
-	//2 copy (simply copy a slice)
-	source := []int{10, 20, 30}
-	dest := make([]int, len(source)) // Create slice with same length
-	copy(dest, source)               // Copy data
-
-	fmt.Println("source:", source, "dest:", dest)
-
-	//slice ranges(creating a slice from an array)
-	arr1 := [5]int{1, 2, 3, 4, 5}
-	slice1 := arr1[1:4] //including index 1 to 3 (excluding index 4)
-
-	fmt.Println("slice1:", slice1) //output [2,3,4]
-	slice2 := arr1[:2]             //from index 0 to 2 output [1,2]
-	fmt.Println("slice2:", slice2)
-
-	slice3 := arr1[1:]             //from index 0 to the last index of arr1
-	fmt.Println("slice3:", slice3) //expected output [2,3,4,5]
-
-	//multidimensional slices (slices of slices (flexible))
-
-	grid := [][]int{ //slices allows rows of different lengths unlike arrays
-		{1, 2, 3},
-		{4, 5},
-		{6, 7, 8, 9},
-	}
-
-	fmt.Println("slices of slices(grid):", grid)
-
+	fmt.Println("file content:", data)
 }
