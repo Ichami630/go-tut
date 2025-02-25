@@ -2,52 +2,79 @@ package main
 
 import "fmt"
 
-//Loops are essential in programming, and in Go,
-//the for loop is the only looping construct. However,
-//it can be used in different ways to handle various scenarios.
+/*Functions in Go
+A function in Go is declared using the "func" keyword
+*/
+
+func sayHello(n string) {
+	fmt.Printf("Hello %s\n", n)
+}
+
+// functions that return a value
+func Square(num int) int {
+	return num * num
+}
+
+// functions returning multiple values
+func divide(divident, divisor int) (int, int) {
+	quotient := divident / divisor
+	remainder := divident % divisor
+
+	return quotient, remainder
+}
+
+// named return values
+func calculateRect(length, width int) (area int) {
+	area = length * width //no need for return area
+	return
+}
+
+//variatic functions (multiple arguments)
+//a variable can accept variable number of arguments using ...
+
+func sum(nums ...int) int {
+	total := 0
+	for _, num := range nums {
+		total += num
+	}
+	return total
+}
+
+// function as a parameter(higher order function)
+func applyOperations(a, b int, operation func(int, int) int) int {
+	return operation(a, b)
+}
+func add(x, y int) int {
+	return x + y
+}
+
+// recursive functions
+func factorial(n int) int {
+	if n == 0 {
+		return 1
+	}
+	return n * factorial(n-1)
+}
 
 func main() {
-	// 1 basic for loop
-	for x := 0; x <= 5; x++ {
-		fmt.Println("number:", x)
-	}
+	sayHello("ichami")
+	square := Square(3)
+	fmt.Printf("Square root: %d\n", square)
 
-	//2.1 infinite loop (do while)
-	count := 1
-	for {
-		fmt.Println("loop running", count)
-		count++
-		if count > 3 {
-			break //stop the loop when count > 3
-		}
-	}
-	//2.2 infinite loop (while loop)
-	n := 2
-	for n > 0 {
-		fmt.Println("countdown", n)
-		n-- //decrement n in each iteration
-	}
+	q, r := divide(10, 3)
+	fmt.Println("quotient:", q, "remainder:", r)
 
-	//3 looping over array and slices
-	nums := []int{10, 23, 30}
-	for index, value := range nums { //similar to for in in js
-		fmt.Printf("index: %d,value: %d\n", index, value)
-	}
-	//similarly, ignore the index if you dont need it
-	for _, value := range nums {
-		fmt.Printf("value: %d\n", value)
-	}
+	fmt.Println("Area of the rectangle is:", calculateRect(7, 3))
 
-	//4 looping over a map (key-value-pairs)
-	person := map[string]int{"ichami": 10, "feli": 5}
-	for key, value := range person {
-		fmt.Printf("%s is %d years old\n", key, value)
-	}
+	fmt.Println("sum of 1,2,3,4,5 is:", sum(1, 2, 3, 4, 5))
 
-	//5 nested loops
-	for i := 1; i <= 2; i++ {
-		for j := 1; j <= 2; j++ {
-			fmt.Printf("i:%d,j:%d\n", i, j)
-		}
+	fmt.Println("result:", applyOperations(2, 3, add))
+
+	//anonymouse (lambda functions)
+	multiply := func(a, b int) int {
+		return a * b
 	}
+	fmt.Println("mutiply:", multiply(2, 3))
+
+	fmt.Println("\nfactorial:", factorial(4))
 }
