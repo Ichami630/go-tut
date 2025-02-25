@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 /*Functions in Go
 A function in Go is declared using the "func" keyword
@@ -56,6 +59,21 @@ func factorial(n int) int {
 	return n * factorial(n-1)
 }
 
+// return the first(initial) letters of a string
+func getInitials(n string) (string, string) {
+	s := strings.ToUpper(n) //convert the passed string to uppercase
+
+	newSlice := strings.Split(s, " ") //store the new string to a slice newSlice
+	var initials []string             //initialise the slice to store the initials of each slice
+	for _, v := range newSlice {
+		initials = append(initials, v[:1])
+	}
+	if len(initials) > 1 {
+		return initials[0], initials[1]
+	}
+	return initials[0], "_"
+}
+
 func main() {
 	sayHello("ichami")
 	square := Square(3)
@@ -77,4 +95,7 @@ func main() {
 	fmt.Println("mutiply:", multiply(2, 3))
 
 	fmt.Println("\nfactorial:", factorial(4))
+
+	f, s := getInitials("good morning")
+	fmt.Println("\n initials:", f, s)
 }
