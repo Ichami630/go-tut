@@ -1,46 +1,45 @@
 package main
 
-/*Go is a pass-by-value language
-This means that when we pass a variable to a function, Go creates a copy of the value and pasess that copy
-The original value remains unchanged unlesss you use pointers
+/*Pointers in Go
+A pointer is a variable that stores the memory location of anothe variable
+Pointers help us modify variables outside the variable scope and efficiently manage memory
+Use an *(asterisk) to declare a pointer and &(ampersand) to get the address of the variable
 */
 
 import "fmt"
 
-func updateName(x string) {
-	x = "brandon" //this modifies the copy
-}
-
-// one way is to return a value in the function and set the value  of the variable to be that of the  returned function
-func updateAge(x int) int {
-	x = 12
-	return x
-}
-
-func updateMenu(x map[string]float64) {
-	x["coffee"] = 10.99
-}
-func main() {
-	//Group A type: int,float,string,arrays,bool,struct
-	name := "ichami"
-	age := 10
-
-	updateName(name) //passing name copy
-	age = updateAge(age)
-
-	fmt.Println(name) //name remains unchanged
-	fmt.Println(age)  //age will be the updated value in the function
-
-	//Group B types: slices,maps,functions
-	menu := map[string]float64{
-		"pie":       4.99,
-		"ice-cream": 9.99,
-	}
-
-	updateMenu(menu)
-	fmt.Println(menu) //see that coffee will be added to the menu from the updateMenu func
-	/*why was the update possible for group B type?
-	In Go, maps are referenced types, unlike struct,int,etc.
-	This means that when you pass a map (group A type) to a function, you are passing a reference to the underlying data, not a copy of the map
+func updateName(x *string) { //creates a pointer variable of type string
+	*x = "brandon" //dereferencing the pointer to modify the original value
+	/*Now what does this mean?
+	Instead of changing x itself, which is just an address,we go to that memory location
+	We modify the actuall value which is stored at that memory location
 	*/
+}
+
+func changeNum(x *int) {
+	*x = 100
+}
+
+func main() {
+	name := "ichami" //declare normal variables
+	num := 10
+
+	//declaring a pointer to an integer
+	var ptr *int
+
+	ptr = &num //assigning the address of num to the ptr
+	changeNum(ptr)
+
+	// updateName(name)
+
+	// fmt.Println("memory address of name:", &name)
+
+	m := &name //pointer m that stores the memory address of the variable name
+	// fmt.Println("memory address:", m)
+
+	// fmt.Println("value stored at pointer memory address m:", m, "is the original value of name:", *m) //the * is used to derefference a pointer
+	//Dereferencing a pointer means goining into to the memory address of that pointer and getting the value which the pointer points to
+	fmt.Println(name) //original value of name remains unchanged
+	updateName(m)
+	fmt.Println("now the original value of the var name changes to the updated name as:", name)
 }
