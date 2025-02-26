@@ -1,16 +1,46 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+// get input
+func getInput(prompt string, r *bufio.Reader) (string, error) {
+	fmt.Print(prompt)
+	input, err := r.ReadString('\n')
+	input = strings.TrimSpace(input)
+
+	return input, err
+}
+
+// function to dynamically create a new bill
+func createBill() Bill {
+	reader := bufio.NewReader(os.Stdin)
+	// fmt.Print("Create a new bill: ")
+	// name, _ := reader.ReadString('\n') //store the entered value once the user presses enter
+	// name = strings.TrimSpace(name)     //removes extra spaces
+	name, _ := getInput("Create a new bill: ", reader)
+
+	b := newBill(name)
+
+	fmt.Println("Created the bill - ", name)
+
+	return b
+}
+
+// func to allow users choose an option
+func promptOption(b Bill) {
+	reader := bufio.NewReader(os.Stdin)
+	opt, _ := getInput("Choose an option (a - Add a bill b - Save a bill c - add a tip): ", reader)
+	fmt.Println(opt)
+}
 
 func main() {
-	myBill := newBill("ichami")
+	myBill := createBill()
+	promptOption(myBill)
+	fmt.Println(myBill)
 
-	// fmt.Println("before updates:", myBill)
-	myBill.updateTips(10)
-	myBill.addItem("apple", 4.99)
-	myBill.addItem("shawarma", 14.99)
-	myBill.addItem("eru", 10.99)
-	// fmt.Println("after updates:", myBill)
-
-	fmt.Println(myBill.format())
 }
