@@ -53,7 +53,8 @@ func promptOption(b Bill) {
 		fmt.Println(name, price)
 		promptOption(b)
 	case "s":
-		fmt.Println("you choosed to save the bill:", b)
+		b.save()
+		fmt.Println("Bill saved successfull- ", b.name)
 	case "t":
 		tip, _ := getInput("Enter the tip amount ($): ", reader)
 		t, err := strconv.ParseFloat(tip, 64) //convert string to float with the help of the strconv package
