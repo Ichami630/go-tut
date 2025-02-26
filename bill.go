@@ -12,7 +12,7 @@ type Bill struct {
 func newBill(name string) Bill {
 	b := Bill{
 		name:  name,
-		items: map[string]float64{"pie": 5.99, "coke": 9.99},
+		items: map[string]float64{},
 		tips:  0,
 	}
 
@@ -28,7 +28,21 @@ func (b Bill) format() string {
 		fs += fmt.Sprintf("%-10v ...$%v\n", k+":", v) //-25 adds some padding to the left
 		total += v
 	}
-	fs += fmt.Sprintf("%-10v ...$%.2f", "total:", total)
+	fs += fmt.Sprintf("%-10v ...$%v\n", "tips:", b.tips)
+	fs += fmt.Sprintf("%-10v ...$%.2f", "total:", total+b.tips)
 
 	return fs
+}
+
+//receiver functions with pointers
+//note: For structs, pointers are automatically dereferenced
+
+// update the tips
+func (b *Bill) updateTips(newTip float64) {
+	b.tips = newTip
+}
+
+// add item to the bill
+func (b *Bill) addItem(key string, value float64) {
+	b.items[key] = value
 }
