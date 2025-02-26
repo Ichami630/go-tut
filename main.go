@@ -1,75 +1,46 @@
 package main
 
-import "fmt"
-
-/*Maps in Go
-A map is a built-in data type used to store key value pairs,similar to dictonaries in python and hash tables in other languages
+/*Go is a pass-by-value language
+This means that when we pass a variable to a function, Go creates a copy of the value and pasess that copy
+The original value remains unchanged unlesss you use pointers
 */
 
+import "fmt"
+
+func updateName(x string) {
+	x = "brandon" //this modifies the copy
+}
+
+// one way is to return a value in the function and set the value  of the variable to be that of the  returned function
+func updateAge(x int) int {
+	x = 12
+	return x
+}
+
+func updateMenu(x map[string]float64) {
+	x["coffee"] = 10.99
+}
 func main() {
-	//create an empty map using make
-	studenAges := make(map[string]int)
-	//add key value pairs
-	studenAges["ichami"] = 10
-	studenAges["feli"] = 4
-	fmt.Println(studenAges)
+	//Group A type: int,float,string,arrays,bool,struct
+	name := "ichami"
+	age := 10
 
-	//declare and initialise a map using the map keyword
-	salaries := map[string]float64{
-		"ichami": 2500000.00,
-		"feli":   2000000.00,
-	}
-	//add new element to a map
-	salaries["betty"] = 50000.00
+	updateName(name) //passing name copy
+	age = updateAge(age)
 
-	//updating an existing map element
-	salaries["betty"] = 100000.00
+	fmt.Println(name) //name remains unchanged
+	fmt.Println(age)  //age will be the updated value in the function
 
-	fmt.Println(salaries)
-
-	//accessing values in map
-	fmt.Println(studenAges["ichami"]) //output 10
-
-	fmt.Println(studenAges["john"]) //accessing a non-existing element in map returns 0
-
-	//checking if a key exist
-	age, exist := studenAges["icham"]
-	if exist {
-		fmt.Println("Age:", age)
-	} else {
-		fmt.Println("No age found for ichami")
+	//Group B types: slices,maps,functions
+	menu := map[string]float64{
+		"pie":       4.99,
+		"ice-cream": 9.99,
 	}
 
-	//delete an element
-	delete(studenAges, "ichami") //remove ichami
-	fmt.Println(studenAges)
-
-	//iterating over a map
-	for name, salary := range salaries {
-		fmt.Println(name, " ends ", salary, " monthly")
-	}
-
-	//finding the length of a map
-	fmt.Println("total employees:", len(salaries))
-
-	//nested maps
-	users := map[string]map[string]string{
-		"ichami": {
-			"age":  "10",
-			"city": "Buea",
-		},
-		"feli": {
-			"age":  "4",
-			"city": "douala",
-		},
-	}
-
-	//iterating over nested maps
-	fmt.Println(users)
-	for user, details := range users {
-		fmt.Println("user:", user)
-		for key, value := range details {
-			fmt.Println(" ", key, ":", value)
-		}
-	}
+	updateMenu(menu)
+	fmt.Println(menu) //see that coffee will be added to the menu from the updateMenu func
+	/*why was the update possible for group B type?
+	In Go, maps are referenced types, unlike struct,int,etc.
+	This means that when you pass a map (group A type) to a function, you are passing a reference to the underlying data, not a copy of the map
+	*/
 }
