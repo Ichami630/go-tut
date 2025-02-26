@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -34,19 +35,35 @@ func createBill() Bill {
 // func to allow users choose an option
 func promptOption(b Bill) {
 	reader := bufio.NewReader(os.Stdin)
-	opt, _ := getInput("Choose an option (a - Add a bill b - Save a bill c - add a tip): ", reader)
+	opt, _ := getInput("Choose an option (a - Add a bill s - Save a bill t - add a tip): ", reader)
 
 	//switch in Go
 	switch opt {
 	case "a":
 		name, _ := getInput("Enter item name: ", reader)
 		price, _ := getInput("Enter the price for the item: ", reader)
+		//now see that the price is pass as "4.99" and is not a number
+		//parse float
+		p, err := strconv.ParseFloat(price, 64) //convert string to float with the help of the strconv package
+		if err != nil {
+			fmt.Println("The price must be a number")
+		}
+		//now add item to items map
+		b.addItem(name, p)
 		fmt.Println(name, price)
-	case "b":
-		fmt.Println("you choosed b")
-	case "c":
+		promptOption(b)
+	case "s":
+		fmt.Println("you choosed to save the bill:", b)
+	case "t":
 		tip, _ := getInput("Enter the tip amount ($): ", reader)
-		fmt.Println(tip)
+		t, err := strconv.ParseFloat(tip, 64) //convert string to float with the help of the strconv package
+		if err != nil {
+			fmt.Println("The tip must be a number")
+		}
+		//now add new tip
+		b.updateTips(t)
+		fmt.Println(t)
+		promptOption(b)
 	default:
 		fmt.Println("invalid option...please try again")
 		promptOption(b)
